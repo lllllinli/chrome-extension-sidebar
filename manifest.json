@@ -1,0 +1,58 @@
+{
+  "manifest_version": 2,
+
+  "name": "medium sidebar",
+  "description" : "medium article title link list",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_title": "medium sidebar",
+    "default_icon": "hello_extensions.png"
+  },
+
+  "permissions": [
+    "debugger",
+    "activeTab",
+    "storage",
+    "declarativeContent",
+    "tabs",
+    "management"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://medium.com/*/*",
+        "https://*.medium.com/*/*",
+        "https://*.medium.com/*"
+      ],
+      "exclude_matches": [
+        "https://medium.com/",
+        "https://medium.com/p/*",
+        "https://medium.com/me/*",
+        "https://medium.com/*/home",
+        "https://*.medium.com/",
+        "https://*.medium.com/p/*",
+        "https://*.medium.com/me/*",
+        "https://*.medium.com/*/home"
+      ],
+      "js": [
+        "js/content/index.js"
+      ],
+      "css": ["styles/content/main.css"],
+      "all_frames": true
+    }
+  ],
+
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": false
+  },
+  "web_accessible_resources": [
+    "icons/*.svg",
+    "styles/*.css",
+    "html/*.html",
+    "js/*.js",
+    "js/content/*.js"
+  ]
+}
