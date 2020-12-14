@@ -4,45 +4,47 @@
 const hasRootDom = (document.getElementById('root') !== undefined);
 const hasTitle = (document.querySelectorAll('h1,h2') !== undefined);
 const rootDom = document.getElementsByTagName('body')[0];
-let extensionNaviDom = document.createElement('div');
-let openNaviButton = document.createElement('div');
+let extensionSideBarDom = document.createElement('div');
+let openSideBarBtn = document.createElement('div');
 const extensionId = 'ffnphmbngpjkgonejojhffgcbjnjjgfb';
 
-const initNavi = () => {
-  extensionNaviDom = extensionNaviDom === undefined
+
+
+const createSideBar = () => {
+  extensionSideBarDom = extensionSideBarDom === undefined
     ? document.createElement('div')
-    : extensionNaviDom;
-  extensionNaviDom.setAttribute('id', 'extension-navi');
-  extensionNaviDom.setAttribute('class', 'extension-navi');
+    : extensionSideBarDom;
+  extensionSideBarDom.setAttribute('id', 'extension-navi');
+  extensionSideBarDom.setAttribute('class', 'extension-navi');
 
-  openNaviButton = openNaviButton === undefined
+  openSideBarBtn = openSideBarBtn === undefined
     ? document.createElement('div')
-    : openNaviButton;
-  openNaviButton.setAttribute('id', 'extension-navi-open-btn');
-  openNaviButton.setAttribute('class', 'extension-navi-open-btn');
-  openNaviButton.setAttribute('title', 'open section list');
+    : openSideBarBtn;
+  openSideBarBtn.setAttribute('id', 'extension-navi-open-btn');
+  openSideBarBtn.setAttribute('class', 'extension-navi-open-btn');
+  openSideBarBtn.setAttribute('title', 'open section list');
 
-  openNaviButton.innerHTML = `<img src="chrome-extension://${extensionId}/icons/arrow_forward-24px.svg"></img>`;
+  openSideBarBtn.innerHTML = `<img src="chrome-extension://${extensionId}/icons/arrow_forward-24px.svg"></img>`;
 
-  rootDom.append(extensionNaviDom);
-  rootDom.append(openNaviButton);
-  extensionNaviDom.innerHTML = '';
+  rootDom.append(extensionSideBarDom);
+  rootDom.append(openSideBarBtn);
+  extensionSideBarDom.innerHTML = '';
 };
 
-const setSidebarDomHtml = function(sidebarDomHtml, insertDom) {
+const setSidebarDomHtml = (sidebarDomHtml, insertDom) => {
   insertDom.innerHTML += `${sidebarDomHtml}`;
 };
 
-const setTitle = function(titleDomHtml, insertDom) {
+const setTitle = (titleDomHtml, insertDom) => {
   insertDom.innerHTML += `<h1 class="navi-h1">${titleDomHtml}</h1>`;
 };
 
-const setList = function(naviListHtml, insertDom) {
+const setList = (naviListHtml, insertDom) => {
   insertDom.innerHTML += `<ul class="navi-ul">${naviListHtml}</ul>`;
 };
 
-const getNaviList = function(titleDom) {
-  const naviList = [];
+const getSideBarList = (titleDom) => {
+  const sideBarList = [];
   for (const [key, domValue] of Object.entries(titleDom)) {
     const id = domValue.id;
     const dom = document.getElementById(id);
@@ -56,18 +58,17 @@ const getNaviList = function(titleDom) {
       topPos: topPos,
     };
 
-    naviList.push(result);
+    sideBarList.push(result);
   }
-  console.log(naviList);
 
-  return naviList;
+  return sideBarList;
 };
 
-const getNaviListHtml = function (naviList) {
-  let naviListHtml = '';
-  naviList.forEach(function(item) {
+const getSideBarListHtml =  (sideBarList) => {
+  let sideBarListHtml = '';
+  sideBarList.forEach((item) => {
     if (item.tagName === 'H1') {
-      naviListHtml +=
+      sideBarListHtml +=
         `<li class="navi-li">
             <span class="link-mark">
               <img src="chrome-extension://${extensionId}/icons/keyboard_arrow_right-24px.svg"></img>
@@ -77,7 +78,7 @@ const getNaviListHtml = function (naviList) {
     }
 
     if (item.tagName === 'H2' && item.id !== '') {
-      naviListHtml +=
+      sideBarListHtml +=
         `<li class="navi-li-sub">
             <span class="navi-a" href="${item.id}">${item.content}</span>
         </li>`;
@@ -85,37 +86,37 @@ const getNaviListHtml = function (naviList) {
 
   });
 
-  return naviListHtml;
+  return sideBarListHtml;
 };
 
-const initSideBar = function initSideBar() {
+const initSideBar = () => {
   let isOpen = true;
   const sidebarButton = document.getElementById('sidebar-button');
 
-  const closeNavi = function () {
-    extensionNaviDom.classList.add('extension-navi-close');
-    setTimeout(function() {
-      openNaviButton.classList.add('extension-navi-open-btn-open');
+  const closeNavi =  () => {
+    extensionSideBarDom.classList.add('extension-navi-close');
+    setTimeout(() => {
+      openSideBarBtn.classList.add('extension-navi-open-btn-open');
     }, 500);
   };
 
-  const openNavi = function () {
-    extensionNaviDom.classList.remove('extension-navi-close');
-    openNaviButton.classList.remove('extension-navi-open-btn-open');
+  const openNavi = () => {
+    extensionSideBarDom.classList.remove('extension-navi-close');
+    openSideBarBtn.classList.remove('extension-navi-open-btn-open');
   };
 
-  sidebarButton.addEventListener('click', function() {
+  sidebarButton.addEventListener('click', () => {
     closeNavi();
     isOpen = !isOpen;
   });
 
-  openNaviButton.addEventListener('click', function() {
+  openSideBarBtn.addEventListener('click', () => {
     openNavi();
     isOpen = !isOpen;
   });
 };
 
-const linkHandle = function(event) {
+const linkHandle = (event) => {
   const target = event.target;
   const hashId = target.getAttribute('href');
   const targetTitleDom = document.getElementById(hashId);
@@ -124,7 +125,7 @@ const linkHandle = function(event) {
   // todo 重新設定 focus
 };
 
-const addLinkListener = function addLinkListener() {
+const addLinkListener = () => {
   const links = document.querySelectorAll('.navi-a');
   const linksLength = links.length;
 
@@ -135,26 +136,26 @@ const addLinkListener = function addLinkListener() {
 
 const pageInit = () => {
   if (hasRootDom && hasTitle) {
-    initNavi();
+    createSideBar();
     const titleDom = document
       .getElementsByTagName('article')[0]
       .querySelectorAll('h1,h2');
-    const naviList = getNaviList(titleDom);
+    const naviList = getSideBarList(titleDom);
     const titleDomHtml = titleDom[0].innerHTML;
-    const naviListHtml = getNaviListHtml(naviList);
+    const naviListHtml = getSideBarListHtml(naviList);
     const sidebarDomHtml = `
     <div class="sidebar" id="sidebar-button">
       <img src="chrome-extension://${extensionId}/icons/arrow_back-24px.svg"></img>
     </div>`;
 
-    setSidebarDomHtml(sidebarDomHtml, extensionNaviDom);
-    setTitle(titleDomHtml, extensionNaviDom);
-    setList(naviListHtml, extensionNaviDom);
+    setSidebarDomHtml(sidebarDomHtml, extensionSideBarDom);
+    setTitle(titleDomHtml, extensionSideBarDom);
+    setList(naviListHtml, extensionSideBarDom);
     initSideBar();
     addLinkListener();
 
   } else {
-    extensionNaviDom.remove();
+    extensionSideBarDom.remove();
     // todo 移除偵聽
   }
 }
@@ -182,37 +183,49 @@ let last_known_scroll_position = 0;
 let ticking = false;
 let lastPos = 0;
 
-const removeAllTitleFocusStyle = function (linkList) {
+const removeAllTitleFocusStyle = (linkList) => {
   for (const entry of Object.entries(linkList)) {
     entry[1].classList.remove('focus');
   }
 };
 
-const setTitleFocusStyle = function (naviList) {
+const setTitleFocusStyle = (naviList) => {
   naviList.classList.add('focus');
 };
 
-const onScrollDown = function (scrollPos) {
+const getTargetLink = (linkDom, id) => {
+  let result = undefined;
+  for (const entry of Object.entries(linkDom)) {
+    const href = entry[1].getAttribute('href');
+    if (href === id) {
+      return entry[1];
+    }
+  }
+
+  return result;
+};
+
+const onFocusHandle = (id) => {
+  const linkList = document.querySelectorAll('.navi-li,.navi-li-sub');
+  const linkDom = document.querySelectorAll('.navi-a');
+  const targetLink = getTargetLink(linkDom, id);
+  const parentElement = targetLink !== undefined ? targetLink.parentElement : undefined;
+
+  removeAllTitleFocusStyle(linkList);
+  if (parentElement) {
+    setTitleFocusStyle(parentElement);
+  }
+};
+
+const onScroll = (scrollPos) => {
   const titleDom = document
     .getElementsByTagName('article')[0]
     .querySelectorAll('h1,h2');
 
-  const naviList = getNaviList(titleDom);
-
-  const getTargetLink = (linkDom, id) => {
-    let result = undefined;
-    for (const entry of Object.entries(linkDom)) {
-      const href = entry[1].getAttribute('href');
-      if (href === id) {
-        return entry[1];
-      }
-    }
-
-    return result;
-  };
+  const naviList = getSideBarList(titleDom);
 
   const naviListLength = naviList.length;
-  const isNextPosHigher = function(naviList, nextCount, scrollPos) {
+  const isNextPosHigher = (naviList, nextCount, scrollPos) => {
     let result;
     if (naviList[nextCount] === undefined) {
       result = true;
@@ -222,57 +235,44 @@ const onScrollDown = function (scrollPos) {
 
     return result;
   };
-  const isScrollTarget = function(idx, nextCount, scrollPos, naviList) {
+
+  const isScrollToTarget = (idx, nextCount, scrollPos, naviList) => {
     return scrollPos > naviList[idx].topPos && isNextPosHigher(naviList, nextCount, scrollPos);
   }
 
   for (let idx = 0; idx < naviListLength; idx++) {
     const nextCount = idx + 1;
-    if (isScrollTarget(idx, nextCount, scrollPos, naviList)) {
-      const linkList = document.querySelectorAll('.navi-li,.navi-li-sub');
-      const linkDom = document.querySelectorAll('.navi-a');
-      const targetLink = getTargetLink(linkDom, naviList[idx].id);
-      const parentElement = targetLink !== undefined ? targetLink.parentElement : undefined;
-
-      removeAllTitleFocusStyle(linkList);
-      if (parentElement) {
-        setTitleFocusStyle(parentElement);
-      }
-
+    if (isScrollToTarget(idx, nextCount, scrollPos, naviList)) {
+      onFocusHandle(naviList[idx].id);
     }
   }
-};
-const onScrollUp = (scrollPos) => {
-
 };
 
 const markLinkScrollPos = (scrollPos) => {
   // Do something with the scroll position
   if (lastPos < scrollPos) {
     // 頁面向下
-    onScrollDown(scrollPos);
+    onScroll(scrollPos);
   } else if (lastPos > scrollPos) {
     // 頁面向上
-    onScrollUp(scrollPos);
+    onScroll(scrollPos);
   }
   lastPos = scrollPos;
 }
 
 // 滑鼠滾動事件
-(() => {
-  window.addEventListener('scroll', () => {
-    last_known_scroll_position = window.scrollY;
+window.addEventListener('scroll', () => {
+  last_known_scroll_position = window.scrollY;
 
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        markLinkScrollPos(last_known_scroll_position);
-        ticking = false;
-      });
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      markLinkScrollPos(last_known_scroll_position);
+      ticking = false;
+    });
 
-      ticking = true;
-    }
-  });
-})();
+    ticking = true;
+  }
+});
 
 
 
