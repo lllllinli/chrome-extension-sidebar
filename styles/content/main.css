@@ -1,4 +1,4 @@
-.extension-navi {
+.extension-sidebar {
     width: 285px;
     overflow-y: scroll;
     height: 100%;
@@ -14,11 +14,11 @@
     border-radius: 10px;
 }
 
-.extension-navi-close {
-    animation: extension-navi-close 500ms forwards;
+.extension-sidebar-close {
+    animation: extension-sidebar-close 500ms forwards;
 }
 
-@keyframes extension-navi-close {
+@keyframes extension-sidebar-close {
     from{
         left: 0;
     }
@@ -27,7 +27,7 @@
     }
 }
 
-.extension-navi .sidebar {
+.extension-sidebar .sidebar {
     position: relative;
     display: block;
     font-size: 25px;
@@ -44,13 +44,13 @@
     height: 40px;
 }
 
-.extension-navi .sidebar > img {
+.extension-sidebar .sidebar > img {
     position: absolute;
     top: 8px;
     left: 8px;
 }
 
-.extension-navi-open-btn {
+.extension-sidebar-open-btn {
     display: none;
     font-size: 25px;
     color: black;
@@ -68,18 +68,18 @@
     z-index: 1000;
 }
 
-.extension-navi-open-btn > img {
+.extension-sidebar-open-btn > img {
     position: absolute;
     top: 8px;
     left: 8px;
 }
 
-.extension-navi-open-btn-open {
+.extension-sidebar-open-btn-open {
     display: block;
     animation: extension-navi-open-btn-open 300ms forwards;
 }
 
-@keyframes extension-navi-open-btn-open {
+@keyframes extension-sidebar-open-btn-open {
     from{
         left: 0;
     }
@@ -88,19 +88,19 @@
     }
 }
 
-.extension-navi-open-btn:hover {
+.extension-sidebar-open-btn:hover {
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.25 );
     cursor: pointer;
     color: #222222;
 }
 
-.extension-navi .sidebar:hover {
+.extension-sidebar .sidebar:hover {
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.25 );
     cursor: pointer;
     color: #222222;
 }
 
-.extension-navi .navi-h1 {
+.extension-sidebar .sidebar-h1 {
     font-weight: 900;
     color: #292929;
     font-size: 20px;
@@ -109,11 +109,11 @@
     border-bottom: 1px solid #292929;
 }
 
-.extension-navi .navi-ul {
+.extension-sidebar .sidebar-ul {
     margin: 10px 10px;
 }
 
-.extension-navi .navi-ul .navi-li {
+.extension-sidebar .sidebar-ul .sidebar-li {
     cursor: pointer;
     padding: 5px 5px;
     display: flex;
@@ -122,7 +122,7 @@
     font-weight: bolder;
 }
 
-.extension-navi .navi-ul .navi-li-sub {
+.extension-sidebar .sidebar-ul .sidebar-li-sub {
     cursor: pointer;
     display: flex;
     flex-direction: row;
@@ -130,7 +130,7 @@
     padding: 0 0 5px 32px;
 }
 
-.extension-navi .navi-ul .navi-li .link-mark {
+.extension-sidebar .sidebar-ul .sidebar-li .link-mark {
     display: block;
     margin: 5px 5px 0 0;
     flex:1 2 10px;
@@ -139,7 +139,7 @@
     height: 20px;
 }
 
-.extension-navi .navi-ul .navi-li .link-mark > img {
+.extension-sidebar .sidebar-ul .sidebar-li .link-mark > img {
     width: 20px;
     height: 20px;
     position: relative;
@@ -149,8 +149,8 @@
     padding: 0;
 }
 
-.extension-navi .navi-ul .navi-li .navi-a,
-.extension-navi .navi-ul .navi-li-sub .navi-a {
+.extension-sidebar .sidebar-ul .sidebar-li .sidebar-a,
+.extension-sidebar .sidebar-ul .sidebar-li-sub .sidebar-a {
     font-size: 14px;
     color: #474747;
     text-decoration: underline;
@@ -158,14 +158,14 @@
     font-weight: 300;
 }
 
-.extension-navi .navi-ul .focus {
+.extension-sidebar .sidebar-ul .focus {
     background: rgba( 255, 255, 255, 0.80 );
     border: 1px solid #0e0e0e;
     border-radius: 10px;
     margin-bottom: 10px;
 }
 
-.extension-navi .navi-ul .focus .navi-a {
+.extension-sidebar .sidebar-ul .focus .sidebar-a {
     color: #0e0e0e;
     font-weight: 900;
 }
