@@ -167,7 +167,6 @@ const pageInit = () => {
     const titleDom = document
       .querySelectorAll('h1,h2');
     const sidebarList = getSideBarList(titleDom);
-    debugger;
     const titleDomHtml = document.getElementsByTagName('h1')[0].innerText;
     const sidebarListHtml = getSideBarListHtml(sidebarList);
     const sidebarDomHtml = `
@@ -182,16 +181,12 @@ const pageInit = () => {
     initSideBarAccordion();
 
   } else {
-    // TODO 移除偵聽
-    // TODO 移除 添加 dom element
     document.getElementById('extension-sidebar').remove();
     document.getElementById('extension-sidebar-open-btn').remove();
   }
 }
 
 const clearExtensionDom = () => {
-  // TODO 移除偵聽
-  // TODO 移除 添加 dom element
   if (document.getElementById('extension-sidebar') || document.getElementById('extension-sidebar-open-btn')) {
     document.getElementById('extension-sidebar').remove();
     document.getElementById('extension-sidebar-open-btn').remove();
