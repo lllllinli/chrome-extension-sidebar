@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cc9b6695-d009-4044-927d-869b466037aa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/js/content/config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/content/app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/content/modules/detectScrollPos.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/content/modules/detectURLChange.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/content/utils/getTargetLink.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/content/utils/removeAllTitleFocusStyle.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/content/utils/setTitleFocusStyle.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/content/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/content/main.js" afterDir="false" />
     </list>
@@ -22,6 +27,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
   </component>
   <component name="ProjectId" id="1l8eXyplxFK4zUwcyyje12gjJil" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -46,11 +54,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/js/content/modules" />
       <recent name="$PROJECT_DIR$/js/content" />
       <recent name="$PROJECT_DIR$/logo" />
       <recent name="$PROJECT_DIR$/icons" />
       <recent name="$PROJECT_DIR$/js/content/components" />
-      <recent name="$PROJECT_DIR$/styles/content" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -79,7 +87,7 @@
       <workItem from="1608262199505" duration="50000" />
       <workItem from="1608262259268" duration="2696000" />
       <workItem from="1608267791212" duration="94000" />
-      <workItem from="1608267896955" duration="2576000" />
+      <workItem from="1608267896955" duration="7121000" />
     </task>
     <servers />
   </component>
