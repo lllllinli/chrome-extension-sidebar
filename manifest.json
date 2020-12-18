@@ -7,7 +7,19 @@
 
   "browser_action": {
     "default_title": "medium sidebar",
-    "default_icon": "hello_extensions.png"
+    "default_icon": {
+      "16": "logo/logo-16.png",
+      "32": "logo/logo-32.png",
+      "48": "logo/logo-48.png",
+      "128": "logo/logo-128.png"
+    }
+  },
+
+  "icons": {
+    "16": "logo/logo-16.png",
+    "32": "logo/logo-32.png",
+    "48": "logo/logo-48.png",
+    "128": "logo/logo-128.png"
   },
 
   "permissions": [
@@ -22,19 +34,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://medium.com/*/*",
-        "https://*.medium.com/*/*",
-        "https://*.medium.com/*"
-      ],
-      "exclude_matches": [
-        "https://medium.com/",
-        "https://medium.com/p/*",
-        "https://medium.com/me/*",
-        "https://medium.com/*/home",
-        "https://*.medium.com/",
-        "https://*.medium.com/p/*",
-        "https://*.medium.com/me/*",
-        "https://*.medium.com/*/home"
+        "<all_urls>"
       ],
       "js": [
         "js/content/index.js"

@@ -10,4 +10,14 @@ chrome.management.getAll(result => {
   console.log('> management :', result);
 });
 
+const name = 'linli';
+
+chrome.storage.sync.set({ name }, function() {
+  console.log('Value is set to ' + name);
+});
+
+chrome.storage.sync.get(['name'], function(result) {
+  console.log('Value currently is ' + result.name);
+});
+
 

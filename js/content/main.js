@@ -1,8 +1,9 @@
 'use strict';
 
+import { isMatchURLs, ruleHosts } from './utils/urlMatchs.js'
 
-const hasRootDom = (document.getElementById('root') !== undefined);
-const hasTitle = (document.querySelectorAll('h1,h2') !== undefined);
+const hasRootDom = () => (document.getElementById('root') !== undefined);
+const hasTitle = () => (document.querySelectorAll('h1') !== undefined);
 const rootDom = document.getElementsByTagName('body')[0];
 let extensionSideBarDom = document.createElement('div');
 let openSideBarBtn = document.createElement('div');
@@ -29,7 +30,7 @@ const createSideBar = () => {
   extensionSideBarDom.innerHTML = '';
 };
 
-const setSidebarDomHtml = (sidebarDomHtml, insertDom) => {
+const setSidebarButtonHtml = (sidebarDomHtml, insertDom) => {
   insertDom.innerHTML += `${sidebarDomHtml}`;
 };
 
@@ -46,23 +47,24 @@ const getSideBarList = (titleDom) => {
   for (const [key, domValue] of Object.entries(titleDom)) {
     const id = domValue.id;
     const dom = document.getElementById(id);
-    const topPos = dom.offsetTop + dom.clientTop;
+    if (id !== undefined && dom !== undefined &&  dom !== null) {
+      const topPos = dom.offsetTop + dom.clientTop;
+      const result = {
+        no: key,
+        tagName: domValue.nodeName,
+        content: domValue.innerText,
+        id: id,
+        topPos: topPos,
+      };
 
-    const result = {
-      no: key,
-      tagName: domValue.nodeName,
-      content: domValue.innerHTML,
-      id: id,
-      topPos: topPos,
-    };
-
-    sideBarList.push(result);
+      sideBarList.push(result);
+    }
   }
 
   return sideBarList;
 };
 
-const getSideBarListHtml =  (sideBarList) => {
+const getSideBarListHtml = (sideBarList) => {
   let sideBarListHtml = '';
   sideBarList.forEach((item) => {
     if (item.tagName === 'H1') {
@@ -71,14 +73,17 @@ const getSideBarListHtml =  (sideBarList) => {
             <span class="link-mark">
               <img src="chrome-extension://${extensionId}/icons/keyboard_arrow_right-24px.svg"></img>
             </span>
-            <span class="sidebar-a" href="${item.id}">${item.content}</span>
+            <span class="sidebar-a" data-href="${item.id}">${item.content}</span>
         </li>`;
     }
 
     if (item.tagName === 'H2' && item.id !== '') {
       sideBarListHtml +=
         `<li class="sidebar-li-sub">
-            <span class="sidebar-a" href="${item.id}">${item.content}</span>
+            <span class="link-mark">
+              <img src="chrome-extension://${extensionId}/icons/arrow_right-24px.svg"></img>
+            </span>
+            <span class="sidebar-a" data-href="${item.id}">${item.content}</span>
         </li>`;
     }
 
@@ -87,9 +92,9 @@ const getSideBarListHtml =  (sideBarList) => {
   return sideBarListHtml;
 };
 
-const initSideBar = () => {
-  let isOpen = true;
+const initSideBarButton = () => {
   const sidebarButton = document.getElementById('sidebar-button');
+  let isOpen = true;
 
   const closeSideBar =  () => {
     extensionSideBarDom.classList.add('extension-sidebar-close');
@@ -104,6 +109,7 @@ const initSideBar = () => {
   };
 
   sidebarButton.addEventListener('click', () => {
+    debugger
     closeSideBar();
     isOpen = !isOpen;
   });
@@ -114,13 +120,32 @@ const initSideBar = () => {
   });
 };
 
+const focusLink = (hashId) => {
+  const linkList = document.querySelectorAll('.sidebar-li,.sidebar-li-sub');
+  const linkDom = document.querySelectorAll('.sidebar-a');
+  const targetLink = getTargetLink(linkDom, hashId);
+  const parentElement = targetLink !== undefined ? targetLink.parentElement : undefined;
+
+
+  if (parentElement) {
+    removeAllTitleFocusStyle(linkList);
+    setTitleFocusStyle(parentElement);
+  }
+}
+
 const linkHandle = (event) => {
+  event.stopPropagation();
+  event.preventDefault();
   const target = event.target;
-  const hashId = target.getAttribute('href');
+  const hashId = (event.target.tagName === 'STRONG')
+    ? target.parentElement.dataset.href
+    : target.dataset.href;
   const targetTitleDom = document.getElementById(hashId);
-  targetTitleDom.scrollIntoView();
-  // todo 移除 focus
-  // todo 重新設定 focus
+  window.scrollTo(0, targetTitleDom.offsetTop + targetTitleDom.clientTop);
+  setTimeout(() => {
+    focusLink(hashId);
+  }, 0)
+
 };
 
 const addLinkListener = () => {
@@ -133,32 +158,32 @@ const addLinkListener = () => {
 };
 
 const pageInit = () => {
-  if (hasRootDom && hasTitle) {
+  if (hasRootDom() && hasTitle()) {
     createSideBar();
     const titleDom = document
-      .getElementsByTagName('article')[0]
       .querySelectorAll('h1,h2');
     const sidebarList = getSideBarList(titleDom);
-    const titleDomHtml = titleDom[0].innerHTML;
+    const titleDomHtml = document.getElementsByTagName('h1')[0].innerText;
     const sidebarListHtml = getSideBarListHtml(sidebarList);
     const sidebarDomHtml = `
     <div class="sidebar" id="sidebar-button">
       <img src="chrome-extension://${extensionId}/icons/arrow_back-24px.svg"></img>
     </div>`;
 
-    setSidebarDomHtml(sidebarDomHtml, extensionSideBarDom);
+    setSidebarButtonHtml(sidebarDomHtml, extensionSideBarDom);
     setTitle(titleDomHtml, extensionSideBarDom);
     setList(sidebarListHtml, extensionSideBarDom);
-    initSideBar();
     addLinkListener();
+    initSideBarButton();
 
   } else {
     extensionSideBarDom.remove();
     // todo 移除偵聽
   }
 }
-
-pageInit();
+if (isMatchURLs(ruleHosts)) {
+  pageInit();
+}
 
 // 偵聽 url 發生變化時事件
 let lastUrl = location.href;
@@ -171,15 +196,10 @@ new MutationObserver(() => {
 }).observe(document, {subtree: true, childList: true});
 
 const onUrlChange = () => {
-  pageInit();
+  if (isMatchURLs(ruleHosts)) {
+    pageInit();
+  }
 }
-
-
-// 處理滑鼠滾動時，顯示閱讀位置
-// Reference: http://www.html5rocks.com/en/tutorials/speed/animations/
-let last_known_scroll_position = 0;
-let ticking = false;
-let lastPos = 0;
 
 const removeAllTitleFocusStyle = (linkList) => {
   for (const entry of Object.entries(linkList)) {
@@ -194,7 +214,7 @@ const setTitleFocusStyle = (sidebarList) => {
 const getTargetLink = (linkDom, id) => {
   let result = undefined;
   for (const entry of Object.entries(linkDom)) {
-    const href = entry[1].getAttribute('href');
+    const href = entry[1].dataset.href;
     if (href === id) {
       return entry[1];
     }
@@ -217,7 +237,6 @@ const onFocusHandle = (id) => {
 
 const onScroll = (scrollPos) => {
   const titleDom = document
-    .getElementsByTagName('article')[0]
     .querySelectorAll('h1,h2');
 
   const sidebarList = getSideBarList(titleDom);
@@ -247,30 +266,44 @@ const onScroll = (scrollPos) => {
 };
 
 const markLinkScrollPos = (scrollPos) => {
-  // Do something with the scroll position
-  if (lastPos < scrollPos) {
-    // 頁面向下
+  if (lastPos < scrollPos && scrollPos !== undefined) {
     onScroll(scrollPos);
-  } else if (lastPos > scrollPos) {
-    // 頁面向上
+  } else if (lastPos > scrollPos && scrollPos !== undefined) {
     onScroll(scrollPos);
   }
   lastPos = scrollPos;
 }
 
-// 滑鼠滾動事件
-window.addEventListener('scroll', () => {
-  last_known_scroll_position = window.scrollY;
+// 處理滑鼠滾動時，顯示閱讀位置
+let lastKnownScrollPosition = 0;
+let ticking = false;
+let lastPos = 0;
+
+const scrollHandle = () => {
+  lastKnownScrollPosition = window.scrollY;
 
   if (!ticking) {
     window.requestAnimationFrame(() => {
-      markLinkScrollPos(last_known_scroll_position);
+      markLinkScrollPos(lastKnownScrollPosition);
       ticking = false;
     });
 
     ticking = true;
   }
-});
+}
+
+
+const addScrollListener = (scrollHandle) => {
+  // 滑鼠滾動事件
+  window.addEventListener('scroll', scrollHandle);
+}
+
+const removeScrollListener = (scrollHandle) => {
+  window.removeEventListener('scroll', scrollHandle)
+}
+
+addScrollListener(scrollHandle);
+// removeScrollListener(scrollHandle);
 
 
 
