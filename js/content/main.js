@@ -1,11 +1,10 @@
 'use strict';
-import { isMatchURLs, ruleHosts } from './utils/urlMatchs.js'
+import { isMatchURLs, ruleHosts } from './utils/urlMatchs.js';
+import { extensionId } from './config.js'
 
-const rootDom = document.getElementsByTagName('body')[0];
-
-const extensionId = 'ffnphmbngpjkgonejojhffgcbjnjjgfb';
 
 const createSideBar = () => {
+  const rootDom = document.getElementsByTagName('body')[0];
   const extensionSideBarDom = document.createElement('div');
   extensionSideBarDom.setAttribute('id', 'extension-sidebar');
   extensionSideBarDom.setAttribute('class', 'extension-sidebar');
