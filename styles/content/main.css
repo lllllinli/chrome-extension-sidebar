@@ -15,7 +15,7 @@
 }
 
 .extension-sidebar-close {
-    animation: extension-sidebar-close 500ms forwards;
+    animation: extension-sidebar-close 300ms forwards;
 }
 
 @keyframes extension-sidebar-close {
@@ -24,6 +24,19 @@
     }
     to{
         left: -285px;
+    }
+}
+
+.extension-sidebar-open {
+    animation: extension-sidebar-open 300ms forwards;
+}
+
+@keyframes extension-sidebar-open {
+    from{
+        left: -285px;
+    }
+    to{
+        left: 0;
     }
 }
 
@@ -87,6 +100,20 @@
     }
     to{
         left: 10px;
+    }
+}
+
+.extension-sidebar-open-btn-close {
+    display: block;
+    animation: extension-sidebar-open-btn-close 300ms forwards;
+}
+
+@keyframes extension-sidebar-open-btn-close {
+    from{
+        left: 10px;
+    }
+    to{
+        left: -40px;
     }
 }
 
@@ -164,7 +191,8 @@
     text-decoration: underline;
     flex:1 2 100%;
     font-weight: 300;
-    word-wrap:break-word;
+    overflow-wrap: anywhere;
+    width: 100%;
 }
 
 .extension-sidebar .sidebar-ul .sidebar-li .sidebar-a {

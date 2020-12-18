@@ -1,24 +1,16 @@
 'use strict';
-
 import { isMatchURLs, ruleHosts } from './utils/urlMatchs.js'
 
-const hasRootDom = () => (document.getElementById('root') !== undefined);
-const hasTitle = () => (document.querySelectorAll('h1') !== undefined);
 const rootDom = document.getElementsByTagName('body')[0];
-let extensionSideBarDom = document.createElement('div');
-let openSideBarBtn = document.createElement('div');
+
 const extensionId = 'ffnphmbngpjkgonejojhffgcbjnjjgfb';
 
 const createSideBar = () => {
-  extensionSideBarDom = extensionSideBarDom === undefined
-    ? document.createElement('div')
-    : extensionSideBarDom;
+  const extensionSideBarDom = document.createElement('div');
   extensionSideBarDom.setAttribute('id', 'extension-sidebar');
   extensionSideBarDom.setAttribute('class', 'extension-sidebar');
 
-  openSideBarBtn = openSideBarBtn === undefined
-    ? document.createElement('div')
-    : openSideBarBtn;
+  const openSideBarBtn = document.createElement('div');
   openSideBarBtn.setAttribute('id', 'extension-sidebar-open-btn');
   openSideBarBtn.setAttribute('class', 'extension-sidebar-open-btn');
   openSideBarBtn.setAttribute('title', 'open section list');
@@ -94,27 +86,37 @@ const getSideBarListHtml = (sideBarList) => {
 
 const initSideBarButton = () => {
   const sidebarButton = document.getElementById('sidebar-button');
+  const extensionSideBarDom = document.getElementById('extension-sidebar');
+  const openSideBarBtn = document.getElementById('extension-sidebar-open-btn');
   let isOpen = true;
 
-  const closeSideBar =  () => {
+  const closeSideBar =  (extensionSideBarDom, openSideBarBtn) => {
+    openSideBarBtn.classList.remove('extension-sidebar-open-btn-close');
+    extensionSideBarDom.classList.remove('extension-sidebar-open');
     extensionSideBarDom.classList.add('extension-sidebar-close');
     setTimeout(() => {
       openSideBarBtn.classList.add('extension-sidebar-open-btn-open');
     }, 500);
   };
 
-  const openSideBar = () => {
-    extensionSideBarDom.classList.remove('extension-sidebar-close');
-    openSideBarBtn.classList.remove('extension-sidebar-open-btn-open');
+  const openSideBar = (extensionSideBarDom, openSideBarBtn) => {
+    openSideBarBtn.classList.add('extension-sidebar-open-btn-close');
+    setTimeout(() => {
+      extensionSideBarDom.classList.add('extension-sidebar-open');
+    }, 300);
+    setTimeout(() => {
+      extensionSideBarDom.classList.remove('extension-sidebar-close');
+      openSideBarBtn.classList.remove('extension-sidebar-open-btn-open');
+    }, 600);
   };
 
   sidebarButton.addEventListener('click', () => {
-    closeSideBar();
+    closeSideBar(extensionSideBarDom, openSideBarBtn);
     isOpen = !isOpen;
   });
 
   openSideBarBtn.addEventListener('click', () => {
-    openSideBar();
+    openSideBar(extensionSideBarDom, openSideBarBtn);
     isOpen = !isOpen;
   });
 };
@@ -157,8 +159,12 @@ const addLinkListener = () => {
 };
 
 const pageInit = () => {
+  const hasRootDom = () => (document.getElementById('root') !== undefined);
+  const hasTitle = () => (document.querySelectorAll('h1') !== undefined);
+
   if (hasRootDom() && hasTitle()) {
     createSideBar();
+    const extensionSideBarDom = document.getElementById('extension-sidebar');
     const titleDom = document
       .querySelectorAll('h1,h2');
     const sidebarList = getSideBarList(titleDom);
@@ -176,8 +182,10 @@ const pageInit = () => {
     initSideBarButton();
 
   } else {
-    extensionSideBarDom.remove();
-    // todo 移除偵聽
+    // TODO 移除偵聽
+    // TODO 移除 添加 dom element
+    document.getElementById('extension-sidebar').remove();
+    document.getElementById('extension-sidebar-open-btn').remove();
   }
 }
 if (isMatchURLs(ruleHosts)) {
@@ -291,15 +299,14 @@ const scrollHandle = () => {
   }
 }
 
-
 const addScrollListener = (scrollHandle) => {
   // 滑鼠滾動事件
   window.addEventListener('scroll', scrollHandle);
 }
 
-const removeScrollListener = (scrollHandle) => {
-  window.removeEventListener('scroll', scrollHandle)
-}
+// const removeScrollListener = (scrollHandle) => {
+//   window.removeEventListener('scroll', scrollHandle)
+// }
 
 addScrollListener(scrollHandle);
 // removeScrollListener(scrollHandle);
