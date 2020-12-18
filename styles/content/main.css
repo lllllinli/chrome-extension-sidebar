@@ -164,6 +164,7 @@
     text-decoration: underline;
     flex:1 2 100%;
     font-weight: 300;
+    word-wrap:break-word;
 }
 
 .extension-sidebar .sidebar-ul .sidebar-li .sidebar-a {
