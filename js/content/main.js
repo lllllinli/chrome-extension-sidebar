@@ -109,7 +109,6 @@ const initSideBarButton = () => {
   };
 
   sidebarButton.addEventListener('click', () => {
-    debugger
     closeSideBar();
     isOpen = !isOpen;
   });
