@@ -47,10 +47,12 @@ export const isMatchURLs = (hosts) => {
     // const regexpRule02 = /^\/[^\/]+$/;
     const hasEditPathname = pathname.indexOf('edit') > -1;
     const hasMePathname = pathname.indexOf('me') > -1;
+    const hasNewStoryPathname = pathname.indexOf('new-story') > -1;
     result = !regexpRule01.test(pathname)
       // && !regexpRule02.test(pathname)
       && !hasMePathname
-      && !hasEditPathname;
+      && !hasEditPathname
+      && !hasNewStoryPathname;
 
     return result;
   }
