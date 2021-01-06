@@ -4,10 +4,13 @@ import App from './app.js';
 import DetectURLChange from './modules/detectURLChange.js';
 import { addScrollListener, scrollHandle } from './modules/detectScrollPos.js';
 
+const appDelayTime = 300;
+
 setTimeout(() => {
   // TODO 1. Add Loading - get h1 h2
   // TODO 2. Handle No H1 H2 status
   if (isMatchURLs(ruleHosts)) {
+    debugger;
     App.pageInit();
   }
 
@@ -25,9 +28,10 @@ setTimeout(() => {
 
 
   setTimeout(() => {
+    // 偵聽 scroll 事件
     addScrollListener(scrollHandle);
   }, 0);
-}, 100);
+}, appDelayTime);
 
 
 
